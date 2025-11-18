@@ -22,7 +22,7 @@ const errorsList = {
 		'Некорректный адрес электронной почты. Допустимы латинские буквы, цифры, "_", "-", "@", точки',
 	passwordIncorrect:
 		"Пароль должен содержать минимум 6 символов, включая заглавную, строчную, цифру и спецсимвол",
-	repeatPasswordIncorrect: "Пароли не совпадают",
+	repeatPasswordIncorrect: "Пароли должны совпадать",
 	emptyField: "Поле не должно быть пустым",
 };
 
@@ -68,11 +68,11 @@ const useStore = () => {
 					name,
 					value && !isPasswordCorrect(value) ? errorsList.passwordIncorrect : "",
 				);
-			if (name === "password" && state.repeatPassword)
-				returnError(
-					name,
-					state.repeatPassword !== value ? errorsList.repeatPasswordIncorrect : "",
-				);
+			// if (name === "password" && state.repeatPassword)
+			// 	returnError(
+			// 		name,
+			// 		state.repeatPassword !== value ? errorsList.repeatPasswordIncorrect : "",
+				// );
 			if (name === "repeatPassword")
 				returnError(
 					name,
@@ -122,14 +122,13 @@ export function App() {
 		!repeatPasswordError;
 
 	const onChange = ({ target }) => {
-		if (!isFormValid) submitButtonRef.current?.focus()
 		handleChange(target.name, target.value);
+		if (isFormValid) submitButtonRef.current?.focus();
 	};
 
 	const onBlur = ({ target }) => {
 		handleBlur(target.name, target.value);
 	};
-
 
 	const onSubmit = (event) => {
 		event.preventDefault();
@@ -138,6 +137,7 @@ export function App() {
 
 	return (
 		<div className={styles.app}>
+			<h4>Приложение на базе Vite</h4>
 			<form onSubmit={onSubmit}>
 				<input
 					type="email"
@@ -167,9 +167,9 @@ export function App() {
 				/>
 
 				<button
-				// ref={submitButtonRef}
-				type="submit"
-				disabled={!isFormValid}
+					ref={submitButtonRef}
+					type="submit"
+					disabled={!isFormValid}
 				>
 					Зарегистрироваться
 				</button>
